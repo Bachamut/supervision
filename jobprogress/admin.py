@@ -18,7 +18,7 @@ class TaskInLine(admin.TabularInline):
 
 @admin.register(Job)
 class JobAdmin(admin.ModelAdmin):
-    list_display = ('job_type', 'plot_number', 'investor', 'kerg', 'created', 'updated', 'status')
+    list_display = ('job_type', 'plot_number', 'investor', 'kerg', 'created', 'status', 'updated')
     list_filter = ('job_type', 'status', 'investor', 'created', 'updated')
     search_fields = ('job_type', 'plot_number', 'kerg', 'investor__last_name')
     prepopulated_fields = {'slug': ('plot_number',)}
@@ -29,9 +29,9 @@ class JobAdmin(admin.ModelAdmin):
     inlines = [TaskInLine]
 
 
-@admin.register(Task)
-class TaskAdmin(admin.ModelAdmin):
-    list_display = ('name', 'body', 'parent_job')
+# @admin.register(Task)
+# class TaskAdmin(admin.ModelAdmin):
+#     list_display = ('name', 'body', 'parent_job')
 
 
 class StatusInLine(admin.TabularInline):
