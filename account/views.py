@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 
 from account.forms import LoginForm
-from jobprogress.models import Job, Task
+from jobprogress.models import Job, Task, JobTemplate
 
 
 def user_login(request):
@@ -32,10 +32,25 @@ def dashboard(request):
 
 @login_required
 def orders(request):
-    context = {'orders': Job.objects.filter(investor=request.user),
-               'tasks': Task.objects.filter()
-               }
+    orders = Job.objects.filter(investor=request.user)
+    # for order in orders:
+    #     tasks = order.objects.task_set.all()
+    tasks = Task.objects.filter()
+    context = {'orders': orders, 'tasks': tasks}
     return render(request, 'account/orders.html', context)
+
+@login_required
+def order(request, order_id):
+    order = Job.objects.get(id=order_id)
+    tasks = order.task_set.all()
+    jobtemplate = JobTemplate.objects.get(pk=order.job_type_id)
+    statuses = jobtemplate.status_set.all()
+    context = {'order': order,
+               'tasks': tasks,
+               'job_type': jobtemplate,
+               'statuses': statuses
+               }
+    return render(request, 'account/order.html', context)
 
 
 

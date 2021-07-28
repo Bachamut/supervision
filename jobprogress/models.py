@@ -5,33 +5,20 @@ from django.contrib.auth.models import User
 
 class JobTemplate(models.Model):
     job_template_name = models.CharField('rodzaj pracy', max_length=30, unique=True)
-    job_template_id = models.CharField('ID szablonu', max_length=4, unique=True)
 
     class Meta:
-        ordering = ('job_template_id',)
         verbose_name = 'Szablon'
         verbose_name_plural = 'Szablony'
 
     def __str__(self):
         return self.job_template_name
 
-    def get_related_status(self):
-        queryset = Status.get_queryset(self.job_template_name)
-        return queryset
-
-    @staticmethod
-    def get_job_type():
-        JOB_TYPE = tuple(JobTemplate.objects.values_list('job_template_id', 'job_template_name'))
-        return JOB_TYPE
-
 
 class Status(models.Model):
-    job_template = models.ManyToManyField(JobTemplate, verbose_name='Rodzaj Pracy')
-    status_id = models.CharField('ID statusu', max_length=30, unique=True)
-    status_name = models.CharField('nazwa statusu', max_length=80, unique=True)
+    job_template = models.ForeignKey(JobTemplate, on_delete=models.CASCADE, verbose_name='Rodzaj Pracy')
+    status_id = models.CharField('ID statusu', max_length=30)
+    status_name = models.CharField('nazwa statusu', max_length=80)
     body = models.TextField('opis', max_length=120, blank=True, null=True)
-
-
 
     class Meta:
         ordering = ('status_id',)
@@ -42,55 +29,31 @@ class Status(models.Model):
         return self.status_name
 
     @staticmethod
-    def get_queryset(job_template_name):
-        queryset = Status.objects.filter(job_template__job_template_name=job_template_name)
-        return queryset
-
-    # @staticmethod
-    # def get_status_choices():
-    #     STATUS_CHOICES = tuple(Status.objects.values_list('status_id', 'status_name'))
-    #     return STATUS_CHOICES
-
-    @staticmethod
     def get_status_choices(jobtype):
-        if jobtype == 1:
-            return [(2, 'Choice 2')]
-        elif jobtype == 2:
-            return tuple(Status.objects.values_list('status_id', 'status_name'))
-        elif jobtype == 3:
-            return tuple(Status.objects.values_list('status_id', 'status_name'))
-        elif jobtype == 4:
-            return tuple(Status.objects.values_list('status_id', 'status_name'))
-        else:
-            return tuple(Status.objects.values_list('status_id', 'status_name'))
-
+        job = JobTemplate.objects.get(id=jobtype)
+        related_status = job.status_set.all()
+        status_choices = tuple(related_status.values_list('status_id', 'status_name'))
+        return status_choices
 
 
 class Job(models.Model):
 
     # JOB_TYPE = [
-    #     ('type_1', 'mdcp'),
-    #     ('type_2', 'podział'),
-    #     ('type_3', 'wznowienie granic'),
-    #     ('type_4', 'obsługa inwestycji'),
+    #     ('type_1', 't1'),
     # ]
     #
-    #
-    # STATUS_CHOICES = [
-    #     ('not_started', 'nie rozpoczęta'),
-    #     ('in_progress', 'w trakcie'),
-    #     ('finished', 'zakończone'),
-    # ]
+    STATUS_CHOICES = [
+        ('status_1', 's1'),
+    ]
 
-    investor = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='inwestor', related_name='job_kerg')
-    # job_type = models.CharField('rodzaj pracy', max_length=30, choices=tuple(JobTemplate.objects.values_list('job_template_id', 'job_template_name')))
-    job_type = models.CharField('rodzaj pracy', max_length=30, choices=JobTemplate.get_job_type())
+    investor = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='klient', related_name='job_kerg')
+    # job_type = models.CharField('rodzaj pracy', max_length=30, choices=JOB_TYPE)
+    job_type = models.ForeignKey(JobTemplate, on_delete=models.PROTECT, verbose_name='typ pracy')
     plot_number = models.CharField('numer działki', max_length=12)
-    kerg = models.CharField(max_length=10, blank=True)
-    slug = models.SlugField(max_length=250, unique_for_date='created')
-    body = models.TextField('opis', max_length=80, blank=True)
-    # status = models.CharField('status', max_length=20, choices=STATUS_CHOICES)
-    status = models.CharField('aktualny etap', max_length=20, choices=Status.get_status_choices(job_type))
+    work_id = models.CharField(max_length=10, null=True)
+    body = models.TextField('opis', max_length=80, null=True)
+    status = models.CharField('status', max_length=20, choices=STATUS_CHOICES)
+    # status = models.CharField('aktualny etap', max_length=20, choices=Status.get_status_choices(1))
     created = models.DateTimeField('utworzono', default=timezone.now)
     updated = models.DateTimeField('ostatnia aktualizacja', auto_now=True)
 
@@ -100,13 +63,13 @@ class Job(models.Model):
         verbose_name_plural = 'Roboty'
 
     def __str__(self):
-        return self.kerg
+        return self.job_type.job_template_name
 
 
 class Task(models.Model):
     name = models.CharField('nazwa zadania', max_length=60)
-    parent_job = models.ForeignKey(Job, on_delete=models.CASCADE, verbose_name='Robota', related_name='tasks')
-    body = models.TextField('opis', max_length=120, blank=True)
+    parent_job = models.ForeignKey(Job, on_delete=models.CASCADE, verbose_name='Robota')
+    body = models.TextField('opis', max_length=120, null=True)
     created = models.DateTimeField('utworzono', default=timezone.now)
     updated = models.DateTimeField('ostatnia aktualizacja', auto_now=True)
 

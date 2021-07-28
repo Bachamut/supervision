@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+    <h1>Informacje o zleceniu</h1>
+    <p>Zlecenie o numerze: {{ order.work_id }}</p>
+    <p>Typ zlecenia: {{ order }}</p>
+    <ol>
+    {% for task in tasks %}
+        <li>
+            <p>{{ task.name }}</p>
+            <p>{{ task.body|linebreaks }}</p>
+        </li>
+    {% empty %}
+            Nie dodano żadnego zadania.
+    {% endfor %}
+    </ol>
+    <p>Etapy zlecenia:</p>
+    <ol>
+    {% for status in statuses %}
+        <li>
+            <p>{{ status }}</p>
+            <p>{{ status.body|linebreaks }}</p>
+        </li>
+    {% empty %}
+            Nie dodano żadnego statusu.
+    {% endfor %}
+    </ol>
+{% endblock %}

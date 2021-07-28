@@ -5,19 +5,24 @@
 {% block content %}
     <h1>Moje zlecenia</h1>
     <p>Witaj w panelu zleceń.</p>
+    <ol>
     {% for order in orders %}
+        <li>
         <article class="media content-section">
             <div class="media-body">
-                <h2><a class="article-title" href="#">{{ order.job_type|upper }}</a></h2>
-                <p class="article-content">{{ order.kerg }} {{ order.plot_number }} {{ order.status }} {{ order.updated }}</p>
-                {% for task in tasks %}
-                    <article class="media content-section">
-                        <div class="media-body">
-                            <p class="article-content">{{ task.name }}</p>
-                        </div>
-                    </article>
-                {% endfor %}
+                <h2><a class="article-title" href="{% url "order" order.id %}">{{ order.job_type|upper }}</a></h2>
+                <p class="article-content"> ID:{{ order.id }}, numer zgłoszenia {{ order.work_id }}, numer działki {{ order.plot_number }}, status {{ order.status }}, aktualizowano {{ order.updated }}</p>
+                <p>Aktualny status: {{ order.status.name }}</p>
+{#                {% for task in tasks %}#}
+{#                    <article class="media content-section">#}
+{#                        <div class="media-body">#}
+{#                            <p class="article-content">{{ task.name }}</p>#}
+{#                        </div>#}
+{#                    </article>#}
+{#                {% endfor %}#}
             </div>
         </article>
+        </li>
     {% endfor %}
+    </ol>
 {% endblock %}

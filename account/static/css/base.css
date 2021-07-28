@@ -4,8 +4,42 @@ body {
     margin:0;
     padding:0;
     font-family:helvetica, sans-serif;
+    background: darkorange;
 }
 
+/*.box{*/
+/*    width: 300px;*/
+/*    padding: 40px;*/
+/*    position: absolute;*/
+/*    top: 50%;*/
+/*    left: 50%;*/
+/*    transform: translate(-50%,-50%);*/
+/*    background: #191919;*/
+/*    text-align: center;*/
+/*}*/
+/*.box h1{*/
+/*    color: white;*/
+/*    text-transform: uppercase;*/
+/*    font-weight: 500;*/
+/*}*/
+/*.box input[type = "submit1"]{*/
+/*    !*border:0;*!*/
+/*    background: blueviolet;*/
+/*    display: block;*/
+/*    margin: 20px auto;*/
+/*    text-align: center;*/
+/*    border: 2px solid #3498db;*/
+/*    padding: 14px 10px;*/
+/*    width: 200px;*/
+/*    outline: none;*/
+/*    color: white;*/
+/*    border-radius: 24px;*/
+/*    transition: 0.25s;*/
+/*}*/
+/*.box input[type = "submit1"]:hover{*/
+/*    width: 280px;*/
+/*    border-color: #2ecc71;*/
+/*}*/
 p {
     line-height: 1.8;
 }
@@ -72,7 +106,7 @@ ol {
     color:#f3f7cc;
 }
 #header a:hover {
-    color:#fff;
+    color: #9c1f1f;
 }
 
 #header .user {
@@ -84,7 +118,7 @@ ol {
     padding:30px 100px;
 }
 
-/* forms */
+ forms
 form {
     overflow:auto;
 }
@@ -172,7 +206,7 @@ ul.messages li a.close {
     float:left;
 }
 
-/* social-auth */
+ social-auth
 .social {
     float:right;
 }
