@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link href="{% static "css/base.css" %}" rel="stylesheet">
+</head>
+<body>
+<div id="header">
+    <span class="logo">SuperVision</span>
+    {% if request.user.is_authenticated %}
+        <ul class="menu">
+            <li {% if section == "dashboard" %}class="selected"{% endif %}>
+                <a href="{% url "account:dashboard" %}">Panel główny</a>
+            </li>
+            <li {% if section == "orders" %}class="selected"{% endif %}>
+                <a href="{% url "jobprogress:orders" %}">Moje zlecenia</a>
+            </li>
+            <li {% if section == "profile" %}class="selected"{% endif %}>
+                <a href="{% url "account:profile" %}">Profil</a>
+            </li>
+            <li {% if section == "employees" %}class="selected"{% endif %}>
+                <a href="{% url "account:employees" %}">Pracownicy</a>
+            </li>
+            <li {% if section == "companies" %}class="selected"{% endif %}>
+                <a href="{% url "account:companies" %}">Firmy</a>
+            </li>
+            <li {% if section == "customers" %}class="selected"{% endif %}>
+                <a href="{% url "account:customers" %}">Klienci</a>
+            </li>
+        </ul>
+    {% endif %}
+    <span class="user">
+ {% if request.user.is_authenticated %}
+     Witaj, {{ request.user.email }}!
+     <a href="{% url "account:logout" %}">Wyloguj</a>
+ {% else %}
+     <a href="{% url "account:login" %}">Zaloguj</a>
+ {% endif %}
+ </span>
+
+</div>
+<div id="content">
+    {% block content %}
+    {% endblock %}
+</div>
+</body>
+</html>

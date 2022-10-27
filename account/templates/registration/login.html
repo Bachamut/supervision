@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "account/base.html" %}
 {% block title %}Logowanie{% endblock %}
 {% block content %}
     <h1>Logowanie</h1>
@@ -11,7 +11,7 @@
         <p>Wypełnij poniższy formularz, aby się zalogować:</p>
     {% endif %}
     <div class="login-form">
-        <form action="{% url 'login' %}" method="post">
+        <form action="{% url 'account:login' %}" method="post">
             {{ form.as_p }}
             {% csrf_token %}
             <input type="hidden" name="next" value="{{ next }}"/>

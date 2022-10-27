@@ -1,0 +1,41 @@
+{% extends "account/base.html" %}
+
+{% block title %}Companies{% endblock %}
+
+{% block content %}
+    <h1>Twoje Firmy</h1>
+    <div id="header">
+        {% if request.user.is_authenticated %}
+        <ul class="menu">
+            <li {% if section == "add_company" %}class="selected"{% endif %}>
+                <a href="{% url "account:add_company" %}">Dodaj firmę</a>
+            </li>
+            <li {% if section == "add_contact" %}class="selected"{% endif %}>
+                <a href="{% url "account:add_contact" %}">Dodaj kontakt</a>
+            </li>
+            <li {% if section == "add_address" %}class="selected"{% endif %}>
+                <a href="{% url "account:add_address" %}">Dodaj adres</a>
+            </li>
+            <li {% if section == "add_customer" %}class="selected"{% endif %}>
+                <a href="{% url "account:add_customer" %}">Dodaj klienta</a>
+            </li>
+        </ul>
+        {% endif %}
+   </div>
+    <ol>
+    {% if companies %}
+    {% for company in companies %}
+        <li>
+        <article class="media content-section">
+            <div class="media-body">
+                <h2>
+                    <a class="article-title" href="{% url "account:edit_company" company.id %}">{{ company.name|upper }}</a>
+                </h2>
+            </div>
+        </article>
+        </li>
+    {% endfor %}
+    {% endif %}
+    </ol>
+{% endblock %}
+

@@ -1,0 +1,33 @@
+{% extends "account/base.html" %}
+
+{% block title %}Empoyees{% endblock %}
+
+{% block content %}
+    <h1>Pracownicy</h1>
+    <p>Witaj w panelu pracowników.</p>
+    <div id="header">
+        {% if request.user.is_authenticated %}
+        <ul class="menu">
+            <li {% if section == "add_employee" %}class="selected"{% endif %}>
+                <a href="{% url "account:add_employee" %}">Dodaj pracownika</a>
+            </li>
+        </ul>
+        {% endif %}
+   </div>
+    <ol>
+    {% if employees %}
+    {% for employee in employees %}
+        <li>
+        <article class="media content-section">
+            <div class="media-body">
+                <h2>
+                    <a class="article-title" href="{% url "account:edit_employee" employee.id %}">{{ employee.email|upper }}</a>
+                </h2>
+            </div>
+        </article>
+        </li>
+    {% endfor %}
+    {% endif %}
+    </ol>
+{% endblock %}
+

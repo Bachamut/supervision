@@ -1,0 +1,52 @@
+{% extends "account/base.html" %}
+
+{% block title %}Orders{% endblock %}
+
+{% block content %}
+    <h1>Moje zlecenia</h1>
+    <p>Witaj w panelu zleceń.</p>
+    <div id="header">
+        {% if request.user.is_authenticated %}
+        <ul class="menu">
+            <li {% if section == "add_order" %}class="selected"{% endif %}>
+                <a href="{% url "jobprogress:add_order" %}">Dodaj zamówienie</a>
+            </li>
+            <li {% if section == "add_template" %}class="selected"{% endif %}>
+                <a href="{% url "jobprogress:add_template" %}">Dodaj template</a>
+            </li>
+        </ul>
+        {% endif %}
+   </div>
+    <ol>
+    {% if orders %}
+    {% for order in orders %}
+        <li>
+        <article class="media content-section">
+            <div class="media-body">
+                <h2>
+                    <a class="article-title" href="{% url "jobprogress:order" order.id %}">{{ order.job_type|upper }}</a>
+                    <a href="{% url "jobprogress:update_order" order.id %}">Update</a>
+                    <a href="{% url "account:dashboard" %}">Edit</a>
+                    <a href="{% url "jobprogress:delete_order" order.id %}">Delete</a>
+
+                </h2>
+                <p class="article-content"> Zleceniodawca: {{ order.investor }}, Wykonawca: {{ order.contractor }}, ID:{{ order.id }}, numer zgłoszenia {{ order.work_id }}, numer działki {{ order.plot_number }}, status {{ order.get_status_display }}, aktualizowano {{ order.updated }}</p>
+                {% if order.status %}
+                    <p>Aktualny status: {{ order.get_status_display }}</p>
+                    <p>Zaplanowane zadania:</p>
+                    {% for task in tasks %}
+                        <article class="media content-section">
+                            <div class="media-body">
+                                <p class="article-content">{{ task.name }}</p>
+                            </div>
+                        </article>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </article>
+        </li>
+    {% endfor %}
+    {% endif %}
+    </ol>
+{% endblock %}
+

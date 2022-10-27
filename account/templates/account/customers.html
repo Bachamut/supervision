@@ -1,0 +1,32 @@
+{% extends "account/base.html" %}
+
+{% block title %}Customers{% endblock %}
+
+{% block content %}
+    <h1>Klienci</h1>
+    <div id="header">
+        {% if request.user.is_authenticated %}
+        <ul class="menu">
+            <li {% if section == "add_customer" %}class="selected"{% endif %}>
+                <a href="{% url "account:add_customer" %}">Dodaj klienta</a>
+            </li>
+        </ul>
+        {% endif %}
+   </div>
+    <ol>
+    {% if customers %}
+    {% for customer in customers %}
+        <li>
+        <article class="media content-section">
+            <div class="media-body">
+                <h2>
+                    <a class="article-title" href="{% url "account:edit_customer" customer.id %}"> {{ customer.related_company.name|upper }}{{ customer.related_user.email|upper }}</a>
+                </h2>
+            </div>
+        </article>
+        </li>
+    {% endfor %}
+    {% endif %}
+    </ol>
+{% endblock %}
+

@@ -1,0 +1,12 @@
+{% extends "account/base.html" %}
+
+{% block title %}Delete{% endblock %}
+
+{% block content %}
+<p>Are you sure you want to delete "{{ order }}"?</p>
+<form action="{% url 'jobprogress:delete_order' order.id %}" method="post">
+    {% csrf_token %}
+    <a href="{% url 'jobprogress:orders' %}">Cancel</a>
+    <input type="submit" name="Confirm">
+</form>
+{% endblock %}
