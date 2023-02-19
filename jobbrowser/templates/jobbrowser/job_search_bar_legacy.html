@@ -1,0 +1,24 @@
+{% block search-bar %}
+    <form action="/search/" method="post">
+        {{ orders_filter.form.non_field_errors }}
+        <div class="fieldWrapper">
+            {{ orders_filter.form.investor.errors }}
+            <label for="id_subject">Investor:</label>
+            {{ orders_filter.form.investor }}
+        </div>
+        <div class="fieldWrapper">
+            {{ orders_filter.form.contractor.errors }}
+            <label for="id_message">Contractor:</label>
+            {{ orders_filter.form.contractor }}
+        </div>
+        <div class="fieldWrapper">
+
+        </div>
+        <div class="fieldWrapper">
+            {{ orders_filter.form.status.errors }}
+            <label for="id_cc_myself">Status</label>
+            {{ orders_filter.form.status }}
+        </div>
+        <p><input type="submit" value="Search"/></p>
+    </form>
+{% endblock search-bar %}

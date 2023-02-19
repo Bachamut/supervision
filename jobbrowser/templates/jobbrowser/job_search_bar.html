@@ -1,0 +1,28 @@
+{% block search-bar %}
+    <form>
+        {{ orders_filter.form.as_table.non_field_errors }}
+        <th>
+            {{ orders_filter.form.job_type.errors }}
+            <label for="job_type">Job type:</label>
+            {{ orders_filter.form.job_type }}
+        </th>
+        <th>
+            {{ orders_filter.form.investor.errors }}
+            <label for="investor">Investor:</label>
+            {{ orders_filter.form.investor }}
+        </th>
+        <th>
+            {{ orders_filter.form.contractor.errors }}
+            <label for="contractor">Contractor:</label>
+            {{ orders_filter.form.contractor }}
+        </th>
+        <th>
+            {{ orders_filter.form.status.errors }}
+            <label for="status">Status</label>
+            {{ orders_filter.form.status }}
+        </th>
+        <th>
+            <input class="btn btn-primary" type="submit" value="Search">
+        </th>
+    </form>
+{% endblock search-bar %}

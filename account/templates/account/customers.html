@@ -3,29 +3,30 @@
 {% block title %}Customers{% endblock %}
 
 {% block content %}
-    <h1>Klienci</h1>
+    <h1>Customers</h1>
     <div id="header">
         {% if request.user.is_authenticated %}
         <ul class="menu">
             <li {% if section == "add_customer" %}class="selected"{% endif %}>
-                <a href="{% url "account:add_customer" %}">Dodaj klienta</a>
+                <a href="{% url "account:add_customer" %}">Add customer</a>
             </li>
         </ul>
         {% endif %}
    </div>
     <ol>
     {% if customers %}
-    {% for customer in customers %}
-        <li>
-        <article class="media content-section">
-            <div class="media-body">
-                <h2>
-                    <a class="article-title" href="{% url "account:edit_customer" customer.id %}"> {{ customer.related_company.name|upper }}{{ customer.related_user.email|upper }}</a>
-                </h2>
-            </div>
-        </article>
-        </li>
-    {% endfor %}
+        <table style="width:100%">
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+        </tr>
+        {% for customer in customers %}
+            <tr>
+                <th><a class="article-title" href="{% url "account:edit_customer" customer.id %}"> {{ customer.related_company.name|upper }}{{ customer.related_user.email|upper }}</a></th>
+                <th>{{ customer.type }}</th>
+            </tr>
+        {% endfor %}
+        </table>
     {% endif %}
     </ol>
 {% endblock %}

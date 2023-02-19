@@ -3,21 +3,18 @@
 {% block title %}Companies{% endblock %}
 
 {% block content %}
-    <h1>Twoje Firmy</h1>
+    <h1>Your Companies</h1>
     <div id="header">
         {% if request.user.is_authenticated %}
         <ul class="menu">
             <li {% if section == "add_company" %}class="selected"{% endif %}>
-                <a href="{% url "account:add_company" %}">Dodaj firmę</a>
+                <a href="{% url "account:add_company" %}">Add company</a>
             </li>
             <li {% if section == "add_contact" %}class="selected"{% endif %}>
-                <a href="{% url "account:add_contact" %}">Dodaj kontakt</a>
+                <a href="{% url "account:add_contact" %}">Add contact</a>
             </li>
             <li {% if section == "add_address" %}class="selected"{% endif %}>
-                <a href="{% url "account:add_address" %}">Dodaj adres</a>
-            </li>
-            <li {% if section == "add_customer" %}class="selected"{% endif %}>
-                <a href="{% url "account:add_customer" %}">Dodaj klienta</a>
+                <a href="{% url "account:add_address" %}">Add address</a>
             </li>
         </ul>
         {% endif %}
@@ -25,15 +22,22 @@
     <ol>
     {% if companies %}
     {% for company in companies %}
-        <li>
-        <article class="media content-section">
-            <div class="media-body">
-                <h2>
-                    <a class="article-title" href="{% url "account:edit_company" company.id %}">{{ company.name|upper }}</a>
-                </h2>
-            </div>
-        </article>
-        </li>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Contact</th>
+                <th>Address</th>
+                <th>Email</th>
+                <th>NIP</th>
+            </tr>
+            <tr>
+                <th><a href="{% url "account:edit_company" company.id %}">{{ company.name|upper }}</a></th>
+                <th><a href="{% url "account:edit_contact" company.contact.id %}">{{ company.contact }}</a></th>
+                <th><a href="{% url "account:edit_address" company.contact.address.id %}">{{ company.contact.address }}</a></th>
+                <th>{{ company.contact.email }}</th>
+                <th>{{ company.contact.nip }}</th>
+            </tr>
+        </table>
     {% endfor %}
     {% endif %}
     </ol>

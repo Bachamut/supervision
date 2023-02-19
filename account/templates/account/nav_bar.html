@@ -1,0 +1,25 @@
+{% block nav-bar %}
+    <ul class="menu">
+        <li {% if section == "dashboard" %}class="selected"{% endif %}>
+            <a href="{% url "account:dashboard" %}">Dashboard</a>
+        </li>
+        <li {% if section == "orders" %}class="selected"{% endif %}>
+            <a href="{% url "jobprogress:orders" %}">MyOrders</a>
+        </li>
+        <li {% if section == "profile" %}class="selected"{% endif %}>
+            <a href="{% url "account:profile" %}">Profile</a>
+        </li>
+        <li {% if section == "employees" %}class="selected"{% endif %}>
+            <a href="{% url "account:employees" %}">Employees</a>
+        </li>
+        <li {% if section == "companies" %}class="selected"{% endif %}>
+            <a href="{% url "account:companies" %}">Company</a>
+        </li>
+        <li {% if section == "customers" %}class="selected"{% endif %}>
+            <a href="{% url "account:customers" %}">Customers</a>
+        </li>
+        <li {% if section == "browser" %}class="selected"{% endif %}>
+            <a href="{% url "jobbrowser:browser" %}">Browser</a>
+        </li>
+    </ul>
+{% endblock nav-bar %}

@@ -1,16 +1,39 @@
 from django import forms
 from django.forms import ModelForm
+from django.core.mail import send_mail
 
 from account.models import Company
 from jobprogress.models import JobTemplate, Job
 
 
-class EmailStatusForm(forms.Form):
+class EmailNotificationForm(forms.Form):
 
     user = forms.CharField(max_length=35)
-    email = forms.EmailField()
-    to = forms.EmailField()
+    email_from = forms.EmailField()
+    email_to = forms.EmailField(required=False)
+    subject = forms.CharField(required=True, max_length=60)
     comments = forms.CharField(required=False, widget=forms.Textarea)
+
+    def get_info(self):
+        cl_data = super().clean()
+        user = cl_data.get('user')
+        email_from = cl_data.get('email_from')
+        email_to = cl_data.get('email_to')
+        subject = cl_data.get('subject')
+
+        msg = f'{user} with email {email_from} send a message:'
+        msg += f'\n'
+        msg += cl_data.get('comments')
+
+        return subject, msg, email_from, email_to
+
+    def send(self):
+        subject, msg, email_from, email_to = self.get_info()
+
+        send_mail(subject=subject,
+                  message=msg,
+                  from_email=email_from,
+                  recipient_list=[email_to])
 
 
 class AddJobTemplate(ModelForm):

@@ -3,6 +3,7 @@ from django.contrib import admin
 from jobprogress.models import Job, Task, JobTemplate, Status
 from account.models import Company
 
+
 @admin.action(description='Oznacz wybrane jako "zakończone"')
 def make_finished(modeladmin, request, queryset):
     queryset.update(status='finished')

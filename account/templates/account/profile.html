@@ -4,12 +4,11 @@
 
 {% block content %}
   <h1>Profile</h1>
-  <p>Welcome to your profile.</p>
     <div id="header">
         {% if request.user.is_authenticated %}
         <ul class="menu">
             <li {% if section == "edit_profile" %}class="selected"{% endif %}>
-                <a href="{% url "account:edit_profile" %}">Edytuj dane</a>
+                <a href="{% url "account:edit_profile" %}">Edit profile</a>
             </li>
         </ul>
         {% endif %}

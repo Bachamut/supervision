@@ -11,6 +11,7 @@ def unauthenticated_user(view_func):
 
     return wrapper_func
 
+
 def user_group_access(view_func):
     def wrapper_func(request, *args, **kwargs):
         allowed_user_group = []

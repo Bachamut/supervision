@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'jobprogress.apps.JobprogressConfig',
+    'jobbrowser.apps.JobbrowserConfig',
+    'django_filters',
     'phonenumber_field',
 ]
 
@@ -136,6 +138,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = 'account:dashboard'
 LOGIN_URL = 'account:login'
 LOGOUT_URL = 'account:logout'
+
+# Email host
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Custom User class
 

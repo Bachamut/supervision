@@ -1,10 +1,22 @@
 @import url(http://fonts.googleapis.com/css?family=Muli);
 
+
+
 body {
     margin:0;
     padding:0;
     font-family:helvetica, sans-serif;
     background: darkorange;
+}
+
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+  padding: 10px;
+}
+
+tr:nth-child(even) {
+  background-color: #D6EEEE;
 }
 
 /*.box{*/
@@ -330,4 +342,25 @@ body {
   background: #fafafa;
   color: #333333;
   margin-top: 5rem;
+}
+
+.add-form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.add-form > * {
+    margin: 10px;
+}
+.add-form input[type="submit"] {
+    background-color: blueviolet;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    font-weight: bold;
+}
+.add-form input[type="submit"]:hover {
+    background-color: #8b00ff;
+    cursor: pointer;
 }

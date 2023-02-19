@@ -1,32 +1,41 @@
 {% extends "account/base.html" %}
 
-{% block title %}Empoyees{% endblock %}
+{% block title %}Employees{% endblock %}
 
 {% block content %}
-    <h1>Pracownicy</h1>
-    <p>Witaj w panelu pracowników.</p>
+    <h1>Employees</h1>
     <div id="header">
         {% if request.user.is_authenticated %}
         <ul class="menu">
             <li {% if section == "add_employee" %}class="selected"{% endif %}>
-                <a href="{% url "account:add_employee" %}">Dodaj pracownika</a>
+                <a href="{% url "account:add_employee" %}">Add employee</a>
             </li>
         </ul>
         {% endif %}
    </div>
     <ol>
     {% if employees %}
-    {% for employee in employees %}
-        <li>
-        <article class="media content-section">
-            <div class="media-body">
-                <h2>
-                    <a class="article-title" href="{% url "account:edit_employee" employee.id %}">{{ employee.email|upper }}</a>
-                </h2>
-            </div>
-        </article>
-        </li>
-    {% endfor %}
+        <table style="width:100%">
+        <tr>
+            <th>First name</th>
+            <th>Last name</th>
+            <th>Position</th>
+            <th>Phone number</th>
+            <th>Email</th>
+            <th></th>
+        </tr>
+        {% for employee in employees %}
+            <tr>
+
+                <th>{{ employee.first_name }}</th>
+                <th>{{ employee.last_name }}</th>
+                <th>{{ employee.position }}</th>
+                <th>{{ employee.phone_number }}</th>
+                <th>{{ employee.email }}</th>
+                <th><a class="article-title" href="{% url "account:edit_employee" employee.id %}">Edit</a></th>
+            </tr>
+        {% endfor %}
+        </table>
     {% endif %}
     </ol>
 {% endblock %}

@@ -3,9 +3,12 @@
 {% block title %}Add company{% endblock %}
 
 {% block content %}
-<form action="" method="post">
+  <form action="" method="post">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit" class="save btn btn-default">Save</button>
-</form>
+  </form>
+
+  <button id="add-contact-button" class="btn btn-default" onclick="window.open('{% url 'account:add_contact' %}', '_blank', 'toolbar=no,scrollbars=yes,resizable=no,top=500,left=500,width=400,height=600');">Add Contact</button>
+
 {% endblock %}

@@ -10,5 +10,7 @@ urlpatterns = [
     path('update_order/<str:pk>/', views.update_order, name='update_order'),
     path('delete_order/<str:pk>/', views.delete_order, name='delete_order'),
     path('orders/', views.InvestorOrdersList.as_view(), name='orders'),
+    path('orders/email_notification/<str:pk>/', views.EmailNotification.as_view(), name='email_notification'),
+    path('orders/email_notification/success', views.ContactSuccessView.as_view(), name='success'),
     re_path(r'^orders/(?P<pk>\d+)', views.OrderDetail.as_view(), name='order'),
 ]

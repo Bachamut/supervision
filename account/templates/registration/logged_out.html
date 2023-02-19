@@ -1,6 +1,6 @@
 {% extends "account/base.html" %}
-{% block title %}Wylogowanie{% endblock %}
+{% block title %}Logout{% endblock %}
 {% block content %}
-    <h1>Wylogowanie</h1>
-    <p>Zostałeś pomyślnie wylogowany. Możesz<a href="{% url "account:login" %}"> zalogować się ponownie</a>.</p>
+    <h1>Logout</h1>
+    <p>You have been logged out. <a href="{% url "account:login" %}"> Log In Again</a>.</p>
 {% endblock %}

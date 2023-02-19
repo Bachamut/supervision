@@ -3,28 +3,44 @@
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
-    <h1>Informacje o zleceniu</h1>
-    <p>Zlecenie o numerze: {{ order.work_id }}</p>
-    <p>Typ zlecenia: {{ order }}</p>
+    <h1>Order Details</h1>
     <ol>
+        <table style="width:100%">
+            <tr>
+                <td>Type</td>
+                <th>Work_ID</th>
+                <th>Investor</th>
+                <th>Contractor</th>
+                <th>ID</th>
+                <th>Status</th>
+            </tr>
+            <tr>
+                <td>{{ order }}</td>
+                <th>{{ order.work_id }}</th>
+                <th>{{ order.investor }}</th>
+                <th>{{ order.contractor }}</th>
+                <th>{{ order.id }}</th>
+                <th>{{ order.get_status_display }}</th>
+            </tr>
+        </table>
+    </ol>
     {% for task in tasks %}
         <li>
             <p>{{ task.name }}</p>
             <p>{{ task.body|linebreaks }}</p>
         </li>
     {% empty %}
-            Nie dodano żadnego zadania.
+        No tasks added
     {% endfor %}
-    </ol>
-    <p>Etapy zlecenia:</p>
+    <p>Order status:</p>
     <ol>
-    {% for status in statuses %}
-        <li>
-            <p>{{ status }}</p>
-            <p>{{ status.body|linebreaks }}</p>
-        </li>
-    {% empty %}
-            Nie dodano żadnego statusu.
-    {% endfor %}
+        {% for status in statuses %}
+            <li>
+                <p>{{ status }}</p>
+                <p>{{ status.body|linebreaks }}</p>
+            </li>
+        {% empty %}
+            No status added
+        {% endfor %}
     </ol>
 {% endblock %}

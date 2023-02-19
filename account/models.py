@@ -54,28 +54,34 @@ class Address(models.Model):
     city = models.CharField(verbose_name='miasto', max_length=30)
     street_name = models.CharField(verbose_name='ulica', max_length=30)
     street_number = models.CharField(verbose_name='numer budynku', max_length=4)
-    room_number = models.CharField(verbose_name='numer lokalu', max_length=4)
+    room_number = models.CharField(verbose_name='numer lokalu', max_length=4, null=True, blank=True)
 
     def __str__(self):
-        return f'{self.city}, {self.get_province_display()}'
+        address = f'{self.get_province_display()}, {self.city}, {self.street_name} {self.street_number}'
+        if self.room_number:
+            address += f'/{self.room_number}'
+        return address
 
 
 class Contact(models.Model):
 
-    nip = models.CharField(verbose_name='NIP', max_length=12)
-    address = models.ForeignKey(Address, verbose_name='adres', on_delete=models.CASCADE)
-    phone_number = PhoneNumberField(verbose_name='telefon kontaktowy')
+    nip = models.CharField(verbose_name='NIP', max_length=12, unique=True)
+    address = models.ForeignKey(Address, verbose_name='address', on_delete=models.CASCADE)
+    phone_number = PhoneNumberField(verbose_name='phone number')
     email = models.EmailField(verbose_name='email')
 
     def __str__(self):
-        return self.nip
+        contact = f'NIP {self.nip}, {self.address.city}, {self.address.street_name} {self.address.street_number}'
+        if self.address.room_number:
+            contact += f'/{self.address.room_number}'
+        return contact
 
 
 class Company(models.Model):
 
-    owner = models.ForeignKey(CustomUser, verbose_name='właściciel', on_delete=models.PROTECT, null=True)
+    owner = models.ForeignKey(CustomUser, verbose_name='owner', on_delete=models.PROTECT, related_name='companies', null=True)
     name = models.CharField('company name', max_length=90)
-    contact = models.ForeignKey(Contact, verbose_name='dane kontaktowe', on_delete=models.CASCADE, null=True)
+    contact = models.ForeignKey(Contact, verbose_name='contact', on_delete=models.CASCADE, related_name='company', null=True)
 
     def __str__(self):
         return self.name

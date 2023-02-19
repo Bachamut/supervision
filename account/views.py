@@ -12,7 +12,7 @@ from django.views.generic import DetailView, ListView
 from account.decorators import unauthenticated_user
 from account.forms import LoginForm, UserForm, RegisterForm, ContactForm, CustomerForm, CompanyForm, AddressForm, \
     EmployeeForm
-from account.models import CustomUser, Employee, Company, Customer
+from account.models import CustomUser, Employee, Company, Customer, Address, Contact
 from jobprogress.models import Job, Task, JobTemplate
 from django.contrib import messages
 
@@ -123,23 +123,29 @@ def edit_profile(request):
 
 
 def add_contact(request):
-
     if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
         form = ContactForm(request.POST)
-        # check whether it's valid:
         if form.is_valid():
-
-            contact = form.save(commit=False)
-            contact.save()
-            # redirect to a new URL:
+            contact = form.save()
             return HttpResponseRedirect('/account/orders')
-
-    # if a GET (or any other method) we'll create a blank form
     else:
         form = ContactForm()
+    return render(request, 'account/add_contact.html', {'contact_form': form})
 
-    return render(request, 'account/add_contact.html', {'form': form})
+
+def edit_contact(request, pk):
+
+    contact = Contact.objects.get(id=pk)
+    form = ContactForm(instance=contact)
+
+    if request.method == 'POST':
+        form = ContactForm(request.POST, instance=contact)
+        if form.is_valid():
+            contact = form.save(commit=False)
+            contact.save()
+            return HttpResponseRedirect('/account/companies')
+
+    return render(request, 'account/edit_contact.html', {'form': form})
 
 
 class CustomersList(ListView):
@@ -211,13 +217,27 @@ def add_address(request):
             address.owner = request.user
             address.save()
             # redirect to a new URL:
-            return HttpResponseRedirect('/account/orders')
+            return HttpResponseRedirect('/account/companies')
 
     # if a GET (or any other method) we'll create a blank form
     else:
         form = AddressForm()
 
     return render(request, 'account/add_company.html', {'form': form})
+
+
+def edit_address(request, pk):
+
+    address = Address.objects.get(id=pk)
+    form = AddressForm(instance=address)
+    if request.method == 'POST':
+        form = AddressForm(request.POST, instance=address)
+        if form.is_valid():
+            address = form.save(commit=False)
+            address.save()
+            return HttpResponseRedirect('/account/companies')
+
+    return render(request, 'account/edit_address.html', {'form': form})
 
 
 class EmployeesList(ListView):

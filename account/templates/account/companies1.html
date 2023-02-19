@@ -1,0 +1,44 @@
+{% extends "account/base.html" %}
+
+{% block title %}Companies{% endblock %}
+
+{% block content %}
+    <h1 class="text-center mb-3">Your Companies</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                {% if request.user.is_authenticated %}
+                <div class="mb-3">
+                    <a href="{% url "account:add_company" %}" class="btn btn-primary">Add Company</a>
+                </div>
+                {% endif %}
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Contact</th>
+                                <th>Address</th>
+                                <th>Email</th>
+                                <th>NIP</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if companies %}
+                            {% for company in companies %}
+                                <tr>
+                                    <td><a href="{% url "account:edit_company" company.id %}">{{ company.name|upper }}</a></td>
+                                    <td><a href="{% url "account:edit_contact" company.contact.id %}">{{ company.contact }}</a></td>
+                                    <td><a href="{% url "account:edit_address" company.contact.address.id %}">{{ company.contact.address }}</a></td>
+                                    <td>{{ company.contact.email }}</td>
+                                    <td>{{ company.contact.nip }}</td>
+                                </tr>
+                            {% endfor %}
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -6,13 +6,13 @@ from account.models import Company, Customer, CustomUser
 
 class JobTemplate(models.Model):
 
-    job_template_name = models.CharField('rodzaj pracy', max_length=30, unique=False)
-    creator = models.ForeignKey(CustomUser, on_delete=models.CASCADE, verbose_name='twórca', null=True)
+    job_template_name = models.CharField('job template name', max_length=30, unique=False)
+    creator = models.ForeignKey(CustomUser, on_delete=models.CASCADE, verbose_name='creator', null=True)
 
     class Meta:
 
-        verbose_name = 'Szablon'
-        verbose_name_plural = 'Szablony'
+        verbose_name = 'template'
+        verbose_name_plural = 'templates'
 
     def __str__(self):
         return self.job_template_name
@@ -20,16 +20,16 @@ class JobTemplate(models.Model):
 
 class Status(models.Model):
 
-    job_template = models.ForeignKey(JobTemplate, on_delete=models.CASCADE, verbose_name='Rodzaj Pracy')
-    status_id = models.CharField('ID statusu', max_length=30)
-    status_name = models.CharField('nazwa statusu', max_length=80)
-    body = models.TextField('opis', max_length=120, blank=True, null=True)
+    job_template = models.ForeignKey(JobTemplate, on_delete=models.CASCADE, verbose_name='job type')
+    status_id = models.CharField('status id', max_length=30)
+    status_name = models.CharField('status name', max_length=80)
+    body = models.TextField('description', max_length=120, blank=True, null=True)
 
     class Meta:
 
         ordering = ('status_id',)
-        verbose_name = 'Etap'
-        verbose_name_plural = 'Etapy'
+        verbose_name = 'status'
+        verbose_name_plural = 'statuses'
 
     def __str__(self):
         return self.status_name
@@ -48,22 +48,22 @@ class Job(models.Model):
         ('status_1', 'pending'),
     ]
 
-    investor = models.ForeignKey(Customer, on_delete=models.CASCADE, verbose_name='klient')
-    contractor = models.ForeignKey(Company, on_delete=models.CASCADE, verbose_name='wykonawca', null=True)
-    job_type = models.ForeignKey(JobTemplate, on_delete=models.PROTECT, verbose_name='typ pracy')
-    plot_number = models.CharField('numer działki', max_length=12)
+    investor = models.ForeignKey(Customer, on_delete=models.CASCADE, verbose_name='investor')
+    contractor = models.ForeignKey(Company, on_delete=models.CASCADE, verbose_name='contactor', null=True)
+    job_type = models.ForeignKey(JobTemplate, on_delete=models.PROTECT, verbose_name='job type')
+    plot_number = models.CharField('plot number', max_length=12)
     work_id = models.CharField(max_length=10, null=True)
-    body = models.TextField('opis', max_length=80, null=True)
+    body = models.TextField('description', max_length=80, null=True)
     status = models.CharField('status', max_length=20, choices=STATUS_CHOICES)
-    created = models.DateTimeField('utworzono', default=timezone.now)
-    updated = models.DateTimeField('ostatnia aktualizacja', auto_now=True)
-    last_accessed = models.DateTimeField('ostatnio otwarto', auto_now=True)
+    created = models.DateTimeField('creation date', default=timezone.now)
+    updated = models.DateTimeField('update date', auto_now=True)
+    last_accessed = models.DateTimeField('last open', auto_now=True)
 
     class Meta:
 
         ordering = ('-created',)
-        verbose_name = 'Robotę'
-        verbose_name_plural = 'Roboty'
+        verbose_name = 'Job'
+        verbose_name_plural = 'Jobs'
 
     def __str__(self):
         return self.job_type.job_template_name
@@ -71,16 +71,16 @@ class Job(models.Model):
 
 class Task(models.Model):
 
-    name = models.CharField('nazwa zadania', max_length=60)
-    parent_job = models.ForeignKey(Job, on_delete=models.CASCADE, verbose_name='Robota')
-    body = models.TextField('opis', max_length=120, null=True)
-    created = models.DateTimeField('utworzono', default=timezone.now)
-    updated = models.DateTimeField('ostatnia aktualizacja', auto_now=True)
+    name = models.CharField('task name', max_length=60)
+    parent_job = models.ForeignKey(Job, on_delete=models.CASCADE, verbose_name='job')
+    body = models.TextField('description', max_length=120, null=True)
+    created = models.DateTimeField('creation date', default=timezone.now)
+    updated = models.DateTimeField('update date', auto_now=True)
 
     class Meta:
 
-        verbose_name = 'Zadanie'
-        verbose_name_plural = 'Zadania'
+        verbose_name = 'task'
+        verbose_name_plural = 'tasks'
 
     def __str__(self):
         return self.name

@@ -1,11 +1,23 @@
-{% extends "account/base.html" %}
 
-{% block title %}Add contact{% endblock %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link href="{% static "css/base.css" %}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
 
 {% block content %}
-<form action="" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="save btn btn-default">Save</button>
-</form>
+    <h1>Add a new contact</h1>
+    <form method="post" onsubmit="window.close();">
+        {% csrf_token %}
+        {{ contact_form.as_p }}
+        <input type="submit" value="Save">
+    </form>
 {% endblock %}
+</body>
+</html>
